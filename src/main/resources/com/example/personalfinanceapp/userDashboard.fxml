@@ -234,15 +234,15 @@
                     </padding>
                     <VBox layoutX="220.0" layoutY="107.0" prefHeight="554.4" prefWidth="669.6" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <HBox prefHeight="315.0" prefWidth="610.0">
-                            <TableView fx:id="tvExpense" onMouseClicked="#selectExpense" prefHeight="315.0" prefWidth="609.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;">
+                            <TableView fx:id="tvExpense" onMouseClicked="#selectExpense" prefHeight="309.0" prefWidth="620.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;">
                                 <columns>
-                                    <TableColumn fx:id="colExpenseID" prefWidth="69.9999828338623" text="ID" />
-                                    <TableColumn fx:id="colExpenseName" prefWidth="100.00000762939453" text="Title" />
-                                    <TableColumn fx:id="colExpenseCategory" prefWidth="85.99998474121094" text="Category" />
-                                    <TableColumn fx:id="colExpenseDescription" prefWidth="114.66665649414062" text="Description" />
-                                    <TableColumn fx:id="colExpenseDate" prefWidth="77.3333740234375" text="Date" />
-                                    <TableColumn fx:id="colExpenseAmount" prefWidth="98.66665649414062" text="Amount" />
-                                    <TableColumn fx:id="colExpenseDelete" prefWidth="60.66668701171875" text="Delete" />
+                                    <TableColumn fx:id="colExpenseTitle" prefWidth="90.0" text="Title" />
+                                    <TableColumn fx:id="colExpenseCategory" text="Category" />
+                                    <TableColumn fx:id="colExpenseDescription" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="colExpenseAmount" prefWidth="100.0" text="Amount" />
+                                    <TableColumn fx:id="colExpenseDate" prefWidth="90.0" text="Date" />
+                           <TableColumn fx:id="colExpenseEdit" prefWidth="70.0" text="Edit" />
+                                    <TableColumn fx:id="colExpenseDelete" prefWidth="70.0" text="Delete" />
                                 </columns>
                             </TableView>
                         </HBox>
@@ -261,12 +261,19 @@
                                 <Label text="Category" />
                                 <Label layoutX="10.0" layoutY="10.0" text="Amount" />
                                 <Label layoutX="55.0" layoutY="74.0" text="Description" />
+                        <Label />
+                        <Label text="Date">
+                           <padding>
+                              <Insets bottom="3.0" />
+                           </padding>
+                        </Label>
                             </VBox>
                             <VBox prefWidth="150.0" spacing="4.0">
                                 <TextField fx:id="tfExpenseTitle" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextField fx:id="tfExpenseCategory" layoutX="10.0" layoutY="10.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextField fx:id="tfExpenseAmount" layoutX="10.0" layoutY="72.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextArea fx:id="taExpenseDescription" prefHeight="70.0" prefWidth="116.0" style="-fx-background-radius: 5; -fx-border-color: #aab6fb; -fx-border-radius: 5;" />
+                        <DatePicker fx:id="dpExpenseDate" />
                             </VBox>
                             <VBox alignment="BOTTOM_RIGHT" prefWidth="120.0" spacing="10.0">
                                 <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#addExpense" prefWidth="110.0" style="-fx-background-color: #AC8CFC;" text="Add Expense" textFill="WHITE" />
@@ -284,13 +291,13 @@
                         <HBox prefHeight="315.0" prefWidth="610.0">
                             <TableView fx:id="tvIncome" onMouseClicked="#selectIncome" prefHeight="315.0" prefWidth="609.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;">
                                 <columns>
-                                    <TableColumn fx:id="colIncomeID" prefWidth="69.9999828338623" text="ID" />
-                                    <TableColumn fx:id="colIncomeTitle" prefWidth="100.00000762939453" text="Title" />
-                                    <TableColumn fx:id="colIncomeCategory" prefWidth="85.99998474121094" text="Category" />
-                                    <TableColumn fx:id="colIncomeDescription" prefWidth="114.66665649414062" text="Description" />
-                                    <TableColumn fx:id="colIncomeDate" prefWidth="77.3333740234375" text="Date" />
-                                    <TableColumn fx:id="colIncomeAmount" prefWidth="98.66665649414062" text="Amount" />
-                                    <TableColumn fx:id="colIncomeDelete" prefWidth="60.66668701171875" text="Delete" />
+                                    <TableColumn fx:id="colIncomeTitle" prefWidth="95.0" text="Title" />
+                                    <TableColumn fx:id="colIncomeCategory" text="Category" />
+                                    <TableColumn fx:id="colIncomeDescription" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="colIncomeAmount" prefWidth="100.0" text="Amount" />
+                                    <TableColumn fx:id="colIncomeDate" prefWidth="90.0" text="Date" />
+                           <TableColumn fx:id="colIncomeEdit" prefWidth="70.0" text="Edit" />
+                                    <TableColumn fx:id="colIncomeDelete" prefWidth="70.0" text="Delete" />
                                 </columns>
                             </TableView>
                         </HBox>
@@ -309,12 +316,19 @@
                                 <Label text="Category" />
                                 <Label layoutX="10.0" layoutY="10.0" text="Amount" />
                                 <Label layoutX="55.0" layoutY="74.0" text="Description" />
+                        <Label />
+                        <Label text="Date">
+                           <padding>
+                              <Insets bottom="3.0" />
+                           </padding>
+                        </Label>
                             </VBox>
                             <VBox prefWidth="150.0" spacing="4.0">
                                 <TextField fx:id="tfIncomeTitle" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextField fx:id="tfIncomeCategory" layoutX="10.0" layoutY="10.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextField fx:id="tfIncomeAmount" layoutX="10.0" layoutY="72.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                 <TextArea fx:id="taIncomeDescription" prefHeight="70.0" prefWidth="116.0" style="-fx-background-radius: 5; -fx-border-color: #aab6fb; -fx-border-radius: 5;" />
+                        <DatePicker fx:id="dpIncomeDate" />
                             </VBox>
                             <VBox alignment="BOTTOM_RIGHT" prefWidth="120.0" spacing="10.0">
                                 <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#addIncome" prefWidth="110.0" style="-fx-background-color: #AC8CFC;" text="Add Income" textFill="WHITE" />
