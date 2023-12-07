@@ -9,6 +9,10 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,7 +26,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.UserDashboardController">
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.UserDashboardController">
     <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="191.0" spacing="30.0" style="-fx-background-color: #AC8CFC;">
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
@@ -221,6 +225,102 @@
                                 <PieChart fx:id="pieChartIncomeCategory" title="Income by Category" GridPane.rowIndex="1" />
                                 <PieChart fx:id="pieChartExpenseCategory" prefHeight="223.0" prefWidth="301.0" title="Expense by Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                             </GridPane>
+                        </HBox>
+                    </VBox>
+                </AnchorPane>
+                <AnchorPane fx:id="expensePane" prefHeight="200.0" prefWidth="200.0" visible="false">
+                    <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                    </padding>
+                    <VBox layoutX="220.0" layoutY="107.0" prefHeight="554.4" prefWidth="669.6" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox prefHeight="315.0" prefWidth="610.0">
+                            <TableView fx:id="tvExpense" onMouseClicked="#selectExpense" prefHeight="315.0" prefWidth="609.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <columns>
+                                    <TableColumn fx:id="colExpenseID" prefWidth="69.9999828338623" text="ID" />
+                                    <TableColumn fx:id="colExpenseName" prefWidth="100.00000762939453" text="Title" />
+                                    <TableColumn fx:id="colExpenseCategory" prefWidth="85.99998474121094" text="Category" />
+                                    <TableColumn fx:id="colExpenseDescription" prefWidth="114.66665649414062" text="Description" />
+                                    <TableColumn fx:id="colExpenseDate" prefWidth="77.3333740234375" text="Date" />
+                                    <TableColumn fx:id="colExpenseAmount" prefWidth="98.66665649414062" text="Amount" />
+                                    <TableColumn fx:id="colExpenseDelete" prefWidth="60.66668701171875" text="Delete" />
+                                </columns>
+                            </TableView>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="170.0" prefWidth="200.0" spacing="20.0">
+                            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="12.0">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                                <padding>
+                                    <Insets top="5.0" />
+                                </padding>
+                                <Label layoutX="10.0" layoutY="45.0" text="Title" />
+                                <Label text="Category" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Amount" />
+                                <Label layoutX="55.0" layoutY="74.0" text="Description" />
+                            </VBox>
+                            <VBox prefWidth="150.0" spacing="4.0">
+                                <TextField fx:id="tfExpenseTitle" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextField fx:id="tfExpenseCategory" layoutX="10.0" layoutY="10.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextField fx:id="tfExpenseAmount" layoutX="10.0" layoutY="72.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextArea fx:id="taExpenseDescription" prefHeight="70.0" prefWidth="116.0" style="-fx-background-radius: 5; -fx-border-color: #aab6fb; -fx-border-radius: 5;" />
+                            </VBox>
+                            <VBox alignment="BOTTOM_RIGHT" prefWidth="120.0" spacing="10.0">
+                                <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#addExpense" prefWidth="110.0" style="-fx-background-color: #AC8CFC;" text="Add Expense" textFill="WHITE" />
+                                <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#updateExpense" prefWidth="110.0" style="-fx-background-color: #aab6fb;" text="Update" textFill="WHITE" />
+                                <Button layoutX="44.0" layoutY="112.0" mnemonicParsing="false" onAction="#clearExpense" prefWidth="110.0" style="-fx-background-color: #aab6fb;" text="Clear" textFill="WHITE" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </AnchorPane>
+                <AnchorPane fx:id="incomePane" prefHeight="200.0" prefWidth="200.0" visible="false">
+                    <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                    </padding>
+                    <VBox layoutX="220.0" layoutY="107.0" prefHeight="554.4" prefWidth="669.6" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox prefHeight="315.0" prefWidth="610.0">
+                            <TableView fx:id="tvIncome" onMouseClicked="#selectIncome" prefHeight="315.0" prefWidth="609.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <columns>
+                                    <TableColumn fx:id="colIncomeID" prefWidth="69.9999828338623" text="ID" />
+                                    <TableColumn fx:id="colIncomeTitle" prefWidth="100.00000762939453" text="Title" />
+                                    <TableColumn fx:id="colIncomeCategory" prefWidth="85.99998474121094" text="Category" />
+                                    <TableColumn fx:id="colIncomeDescription" prefWidth="114.66665649414062" text="Description" />
+                                    <TableColumn fx:id="colIncomeDate" prefWidth="77.3333740234375" text="Date" />
+                                    <TableColumn fx:id="colIncomeAmount" prefWidth="98.66665649414062" text="Amount" />
+                                    <TableColumn fx:id="colIncomeDelete" prefWidth="60.66668701171875" text="Delete" />
+                                </columns>
+                            </TableView>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="170.0" prefWidth="200.0" spacing="20.0">
+                            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="12.0">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                                <padding>
+                                    <Insets top="5.0" />
+                                </padding>
+                                <Label layoutX="10.0" layoutY="45.0" text="Title" />
+                                <Label text="Category" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Amount" />
+                                <Label layoutX="55.0" layoutY="74.0" text="Description" />
+                            </VBox>
+                            <VBox prefWidth="150.0" spacing="4.0">
+                                <TextField fx:id="tfIncomeTitle" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextField fx:id="tfIncomeCategory" layoutX="10.0" layoutY="10.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextField fx:id="tfIncomeAmount" layoutX="10.0" layoutY="72.0" style="-fx-border-color: #aab6fb; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                                <TextArea fx:id="taIncomeDescription" prefHeight="70.0" prefWidth="116.0" style="-fx-background-radius: 5; -fx-border-color: #aab6fb; -fx-border-radius: 5;" />
+                            </VBox>
+                            <VBox alignment="BOTTOM_RIGHT" prefWidth="120.0" spacing="10.0">
+                                <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#addIncome" prefWidth="110.0" style="-fx-background-color: #AC8CFC;" text="Add Income" textFill="WHITE" />
+                                <Button layoutX="48.0" layoutY="74.0" mnemonicParsing="false" onAction="#updateIncome" prefWidth="110.0" style="-fx-background-color: #aab6fb;" text="Update" textFill="WHITE" />
+                                <Button layoutX="44.0" layoutY="112.0" mnemonicParsing="false" onAction="#clearIncome" prefWidth="110.0" style="-fx-background-color: #aab6fb;" text="Clear" textFill="WHITE" />
+                            </VBox>
                         </HBox>
                     </VBox>
                 </AnchorPane>

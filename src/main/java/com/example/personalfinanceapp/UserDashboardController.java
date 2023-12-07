@@ -46,10 +46,58 @@ public class UserDashboardController {
     private ChoiceBox<?> choiceBoxDate;
 
     @FXML
+    private TableColumn<?, ?> colExpenseAmount;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseCategory;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseDate;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseDelete;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseDescription;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseID;
+
+    @FXML
+    private TableColumn<?, ?> colExpenseName;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeAmount;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeCategory;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeDate;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeDelete;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeDescription;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeID;
+
+    @FXML
+    private TableColumn<?, ?> colIncomeTitle;
+
+    @FXML
     private AnchorPane dashboardPane;
 
     @FXML
     private DatePicker datePicker;
+
+    @FXML
+    private AnchorPane expensePane;
+
+    @FXML
+    private AnchorPane incomePane;
 
     @FXML
     private Label labelExpense;
@@ -65,6 +113,77 @@ public class UserDashboardController {
 
     @FXML
     private PieChart pieChartIncomeCategory;
+
+    @FXML
+    private TextArea taExpenseDescription;
+
+    @FXML
+    private TextArea taIncomeDescription;
+
+    @FXML
+    private TextField tfExpenseAmount;
+
+    @FXML
+    private TextField tfExpenseCategory;
+
+    @FXML
+    private TextField tfExpenseTitle;
+
+    @FXML
+    private TextField tfIncomeAmount;
+
+    @FXML
+    private TextField tfIncomeCategory;
+
+    @FXML
+    private TextField tfIncomeTitle;
+
+    @FXML
+    private TableView<?> tvExpense;
+
+    @FXML
+    private TableView<?> tvIncome;
+
+    @FXML
+    void addExpense() {
+
+    }
+
+    @FXML
+    void addIncome() {
+
+    }
+
+    @FXML
+    void clearExpense() {
+
+    }
+
+    @FXML
+    void clearIncome() {
+
+    }
+
+    @FXML
+    void selectExpense() {
+
+    }
+
+    @FXML
+    void selectIncome() {
+
+    }
+
+    @FXML
+    void updateExpense() {
+
+    }
+
+    @FXML
+    void updateIncome() {
+
+    }
+
 
     @FXML
     void clickedLogout(ActionEvent event) {
