@@ -1,5 +1,6 @@
-package com.example.personalfinanceapp;
+package com.example.personalfinanceapp.controller;
 
+import com.example.personalfinanceapp.db.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,8 +48,7 @@ public class LoginController {
         stage.close();
     }
     public void validateLogin() {
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectDB = connectNow.getConnection();
+        Connection connectDB = DatabaseConnection.getConnection();
 
         String verifyLogin = "SELECT count(1) FROM login_info WHERE username = '"+usernameTextfield.getText()+"' AND password = '"+passwordPasswordField.getText()+"'";
 
@@ -82,7 +82,7 @@ public class LoginController {
         }
     }
     public void  gotoUserStage() throws IOException {
-        Parent userStageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("userDashboard.fxml")));
+        Parent userStageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/personalfinanceapp/userDashboard.fxml")));
         Stage userStage = new Stage();
         Scene userStageScene = new Scene(userStageParent);
         userStage.setScene(userStageScene);

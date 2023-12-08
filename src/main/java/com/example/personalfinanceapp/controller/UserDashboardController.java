@@ -1,5 +1,6 @@
-package com.example.personalfinanceapp;
+package com.example.personalfinanceapp.controller;
 
+import com.example.personalfinanceapp.db.DatabaseConnection;
 import com.example.personalfinanceapp.model.Expense;
 import com.example.personalfinanceapp.model.Goal;
 import com.example.personalfinanceapp.model.Income;
@@ -24,7 +25,6 @@ import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 
 public class UserDashboardController implements Initializable {
@@ -1045,7 +1045,7 @@ public class UserDashboardController implements Initializable {
 
             if (option.get().equals(ButtonType.OK)) {
                 btnLogout.getScene().getWindow().hide();
-                Parent loginStageParent = FXMLLoader.load(getClass().getResource("login.fxml"));
+                Parent loginStageParent = FXMLLoader.load(getClass().getResource("/com/example/personalfinanceapp/login.fxml"));
                 Stage loginStage = new Stage();
                 Scene loginStageScene = new Scene(loginStageParent);
                 loginStage.setScene(loginStageScene);

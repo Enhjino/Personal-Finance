@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.UserDashboardController">
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.controller.UserDashboardController">
     <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="191.0" spacing="30.0" style="-fx-background-color: #AC8CFC;">
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />

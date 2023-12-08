@@ -12,57 +12,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #AC8CFC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #AC8CFC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personalfinanceapp.controller.LoginController">
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <VBox prefHeight="200.0" prefWidth="100.0">
             <Label prefHeight="27.0" prefWidth="301.0" text="PERSONAL FINANCE APP" textFill="WHITE">
                <font>
-                  <Font size="18.0"/>
+                  <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="27.0" prefWidth="301.0" text="Welcome back to financial wellness." textFill="WHITE"/>
+            <Label prefHeight="27.0" prefWidth="301.0" text="Welcome back to financial wellness." textFill="WHITE" />
          </VBox>
          <VBox alignment="CENTER_LEFT" prefHeight="207.0" prefWidth="261.0" style="-fx-border-radius: 10;">
             <ImageView fitHeight="210.0" fitWidth="259.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@images/Logo.jpg"/>
+               <Image url="@images/Logo.jpg" />
             </ImageView>
          </VBox>
          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
             <Label text="O.ENKHJIN 20B1NUM1909" textFill="#ebebeb">
                <font>
-                  <Font size="10.0"/>
+                  <Font size="10.0" />
                </font>
             </Label>
             <Label text="L.NARANCHIMEG 20B1NUM0671" textFill="#fdfdfd">
                <font>
-                  <Font size="10.0"/>
+                  <Font size="10.0" />
                </font>
             </Label>
          </VBox>
       </VBox>
    </left>
    <right>
-      <VBox alignment="CENTER" maxHeight="200.0" prefHeight="200.0" prefWidth="200.0" spacing="15.0"
-            style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="200.0" prefHeight="200.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets/>
+            <Insets />
          </BorderPane.margin>
          <Label text="Log in" textFill="#ac8cfc">
             <font>
-               <Font name="System Bold" size="18.0"/>
+               <Font name="System Bold" size="18.0" />
             </font>
          </Label>
-         <TextField fx:id="usernameTextfield" maxWidth="180.0" prefWidth="150.0" promptText="User Name"
-                    style="-fx-border-radius: 5; -fx-border-style: solid inside; -fx-border-color: #AC8CFC;"/>
-         <PasswordField fx:id="passwordPasswordField" maxWidth="180.0" promptText="Password"
-                        style="-fx-border-color: #AC8CFC; -fx-border-style: solid inside; -fx-border-radius: 5;"/>
+         <TextField fx:id="usernameTextfield" maxWidth="180.0" prefWidth="150.0" promptText="User Name" style="-fx-border-radius: 5; -fx-border-style: solid inside; -fx-border-color: #AC8CFC;" />
+         <PasswordField fx:id="passwordPasswordField" maxWidth="180.0" promptText="Password" style="-fx-border-color: #AC8CFC; -fx-border-style: solid inside; -fx-border-radius: 5;" />
          <HBox alignment="CENTER" prefHeight="27.0" prefWidth="200.0" spacing="5.0">
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonOnAction" prefWidth="80.0"
-                    style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Log in" textFill="WHITE"/>
-            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="25.0"
-                    prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Exit"
-                    textFill="WHITE"/>
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonOnAction" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Log in" textFill="WHITE" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Exit" textFill="WHITE" />
          </HBox>
       </VBox>
    </right>
