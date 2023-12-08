@@ -1,14 +1,12 @@
 package com.example.personalfinanceapp.controller;
 
 import com.example.personalfinanceapp.db.DatabaseConnection;
+import com.example.personalfinanceapp.model.UserContext;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +26,8 @@ public class LoginController {
 
     @FXML
     private TextField usernameTextfield;
+    @FXML
+    private Label labelUsername;
     @FXML
     void loginButtonOnAction() {
         Alert alert;
@@ -60,6 +60,7 @@ public class LoginController {
 
             while (queryResult.next()) {
                 if(queryResult.getInt(1) == 1) {
+                    UserContext.setUsername(usernameTextfield.getText());
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Мэдэгдэл");
                     alert.setHeaderText(null);
@@ -67,6 +68,7 @@ public class LoginController {
                     alert.showAndWait();
                     Stage stage = (Stage) exitButton.getScene().getWindow();
                     stage.close();
+
                     gotoUserStage();
                 } else {
                     alert = new Alert(Alert.AlertType.ERROR);

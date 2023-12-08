@@ -4,6 +4,12 @@ import com.example.personalfinanceapp.db.DatabaseConnection;
 import com.example.personalfinanceapp.model.Expense;
 import com.example.personalfinanceapp.model.Goal;
 import com.example.personalfinanceapp.model.Income;
+import com.example.personalfinanceapp.model.UserContext;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,8 +53,6 @@ public class UserDashboardController implements Initializable {
     @FXML
     private NumberAxis yAxisExpense;
 
-    @FXML
-    private Button btnBudget;
 
     @FXML
     private Button btnDashboard;
@@ -65,8 +69,6 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Button btnLogout;
 
-    @FXML
-    private Button btnReport;
 
     @FXML
     private DatePicker dpDashboardEndDate;
@@ -127,6 +129,9 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private TableColumn<Goal, String> colGoalMonth;
+
+    @FXML
+    private TableColumn<Goal, Boolean> colGoalDone;
 
     @FXML
     private AnchorPane dashboardPane;
@@ -255,7 +260,7 @@ public class UserDashboardController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/edit.png")));
+                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/personalfinanceapp/images/edit.png")));
                             ImageView viewEdit = new ImageView(imgEdit);
                             viewEdit.setFitHeight(16);
                             viewEdit.setPreserveRatio(true);
@@ -304,7 +309,7 @@ public class UserDashboardController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/delete.png")));
+                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/personalfinanceapp/images/delete.png")));
                             ImageView viewEdit = new ImageView(imgEdit);
                             viewEdit.setFitHeight(16);
                             viewEdit.setPreserveRatio(true);
@@ -378,7 +383,7 @@ public class UserDashboardController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/edit.png")));
+                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/personalfinanceapp/images/edit.png")));
                             ImageView viewEdit = new ImageView(imgEdit);
                             viewEdit.setFitHeight(16);
                             viewEdit.setPreserveRatio(true);
@@ -427,7 +432,7 @@ public class UserDashboardController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/delete.png")));
+                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/personalfinanceapp/images/delete.png")));
                             ImageView viewEdit = new ImageView(imgEdit);
                             viewEdit.setFitHeight(16);
                             viewEdit.setPreserveRatio(true);
@@ -465,12 +470,24 @@ public class UserDashboardController implements Initializable {
 
             Goal goalData;
             while (result.next()) {
-                goalData = new Goal(result.getString("Id"), result.getString("month"), result.getInt("expected"),
-                        result.getInt("actual"));
+
+                goalData = new Goal(result.getString("Id"), result.getString("month"),
+                        result.getInt("expected"), result.getInt("actual"),result.getBoolean("done"));
                 goalList.add(goalData);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return goalList;
     }
@@ -482,6 +499,36 @@ public class UserDashboardController implements Initializable {
         colGoalExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
         colGoalActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
         colGoalEdit.setCellValueFactory(new PropertyValueFactory<>("edit"));
+//        colGoalDone.setCellValueFactory(new PropertyValueFactory<>("done"));
+//        colGoalDone.setCellFactory(CheckBoxTableCell.forTableColumn(colGoalDone));
+//        colGoalDone.setEditable(false);
+//
+        colGoalDone.setCellFactory(column -> new TableCell<Goal, Boolean>() {
+            private final CheckBox checkBox = new CheckBox();
+
+            {
+                // Add a listener to update the CheckBox when the item changes
+                itemProperty().addListener((obs, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        int actual = getTableView().getItems().get(getIndex()).getActual();
+                        int expected = getTableView().getItems().get(getIndex()).getExpected();
+                        checkBox.setSelected(actual >= expected);
+                    } else {
+                        checkBox.setSelected(false);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    setGraphic(checkBox);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
 
         Callback<TableColumn<Goal, Button>, TableCell<Goal, Button>> editCellFactory
                 = new Callback<TableColumn<Goal, Button>, TableCell<Goal, Button>>() {
@@ -497,7 +544,7 @@ public class UserDashboardController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/edit.png")));
+                            Image imgEdit = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/personalfinanceapp/images/edit.png")));
                             ImageView viewEdit = new ImageView(imgEdit);
                             viewEdit.setFitHeight(16);
                             viewEdit.setPreserveRatio(true);
@@ -617,7 +664,7 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void addGoal(ActionEvent event) {
-        String query = "INSERT INTO goal (month, expected, actual) " + "VALUES (?,?,?)";
+        String query = "INSERT INTO goal (month, expected, actual,done) " + "VALUES (?,?,?,?)";
         connect = DatabaseConnection.getConnection();
         try {
             Alert alert;
@@ -628,13 +675,13 @@ public class UserDashboardController implements Initializable {
                 alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
                 alert.showAndWait();
             } else {
-                int calculatedActual = 0;
+                int calculatedActual = calculateActualForGoal(tfGoalMonth.getText());
 
                 prepare = connect.prepareStatement(query);
                 prepare.setString(1, tfGoalMonth.getText());
                 prepare.setInt(2, Integer.parseInt(tfGoalExpected.getText()));
                 prepare.setInt(3, calculatedActual);
-
+                prepare.setBoolean(4, (calculatedActual > Integer.parseInt(tfGoalExpected.getText())));
 
                 prepare.executeUpdate();
 
@@ -905,10 +952,38 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+    private int calculateActualForGoal(String month) {
+
+        Map<String, String> monthMap = new HashMap<>();
+        monthMap.put("January", "01");
+        monthMap.put("February", "02");
+        monthMap.put("March", "03");
+        monthMap.put("April", "04");
+        monthMap.put("May", "05");
+        monthMap.put("June", "06");
+        monthMap.put("July", "07");
+        monthMap.put("August", "08");
+        monthMap.put("September", "09");
+        monthMap.put("October", "10");
+        monthMap.put("November", "11");
+        monthMap.put("December", "12");
+
+        String monthNumber = monthMap.get(month);
+
+        String formattedMonth = LocalDate.now().getYear() + "-" + monthNumber;
+
+        LocalDate startDate = LocalDate.parse(formattedMonth + "-01");
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+
+        long totalIncome = calculateTotalIncomeFromDatabase(startDate, endDate);
+        long totalExpense = calculateTotalExpenseFromDatabase(startDate, endDate);
+
+        return (int) (totalIncome - totalExpense);
+    }
 
     @FXML
     void updateGoal() {
-        String query = "UPDATE goal SET month = ?, expected = ?, actual = ? WHERE id = ?";
+        String query = "UPDATE goal SET month = ?, expected = ?, actual = ?, done = ? WHERE id = ?";
 
         connect = DatabaseConnection.getConnection();
 
@@ -928,13 +1003,14 @@ public class UserDashboardController implements Initializable {
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
-                    int calculatedActual = 0;
+                    int calculatedActual = calculateActualForGoal(tfGoalMonth.getText());
 
                     prepare = connect.prepareStatement(query);
                     prepare.setString(1, tfGoalMonth.getText());
                     prepare.setInt(2, Integer.parseInt(tfGoalExpected.getText()));
                     prepare.setInt(3, calculatedActual);
-                    prepare.setString(4,selectedGoalId);
+                    prepare.setBoolean(4,(calculatedActual > Integer.parseInt(tfGoalExpected.getText())));
+                    prepare.setString(5,selectedGoalId);
 
                     prepare.executeUpdate();
 
@@ -953,18 +1029,19 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    public long calculateTotalIncomeFromDatabase() {
-        String query = "SELECT amount FROM income";
+    public long calculateTotalIncomeFromDatabase(LocalDate startDate, LocalDate endDate) {
+        String query = "SELECT amount FROM income WHERE date BETWEEN ? AND ?";
         long totalIncome = 0;
 
         try {
-
             if (connect == null || connect.isClosed()) {
                 connect = DatabaseConnection.getConnection();
             }
 
-            statement = connect.createStatement();
-            result = statement.executeQuery(query);
+            prepare = connect.prepareStatement(query);
+            prepare.setDate(1, java.sql.Date.valueOf(startDate));
+            prepare.setDate(2, java.sql.Date.valueOf(endDate));
+            result = prepare.executeQuery();
 
             while (result.next()) {
                 totalIncome += result.getLong("amount");
@@ -974,7 +1051,7 @@ public class UserDashboardController implements Initializable {
         } finally {
             try {
                 if (result != null) result.close();
-                if (statement != null) statement.close();
+                if (prepare != null) prepare.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -983,18 +1060,19 @@ public class UserDashboardController implements Initializable {
         return totalIncome;
     }
 
-    public long calculateTotalExpenseFromDatabase() {
-        String query = "SELECT amount FROM expense";
+    public long calculateTotalExpenseFromDatabase(LocalDate startDate, LocalDate endDate) {
+        String query = "SELECT amount FROM expense WHERE date BETWEEN ? AND ?";
         long totalExpense = 0;
 
         try {
-
             if (connect == null || connect.isClosed()) {
                 connect = DatabaseConnection.getConnection();
             }
 
-            statement = connect.createStatement();
-            result = statement.executeQuery(query);
+            prepare = connect.prepareStatement(query);
+            prepare.setDate(1, java.sql.Date.valueOf(startDate));
+            prepare.setDate(2, java.sql.Date.valueOf(endDate));
+            result = prepare.executeQuery();
 
             while (result.next()) {
                 totalExpense += result.getLong("amount");
@@ -1004,7 +1082,7 @@ public class UserDashboardController implements Initializable {
         } finally {
             try {
                 if (result != null) result.close();
-                if (statement != null) statement.close();
+                if (prepare != null) prepare.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -1013,25 +1091,9 @@ public class UserDashboardController implements Initializable {
         return totalExpense;
     }
 
-    @FXML
-    void showAllTime(ActionEvent event) {
-//        dpDashboardStartDate.setValue(null);
-//        dpDashboardEndDate.setValue(null);
-//
-//        populateExpenseCategoryPieChart(null, null); // Pass null to indicate all time
-//        populateIncomeCategoryPieChart(null, null);
-
-    }
 
 
-    @FXML
-    void updateTotalIncomeExpenseLabel() {
-        long totalIncome = calculateTotalIncomeFromDatabase();
-        long totalExpense = calculateTotalExpenseFromDatabase();
 
-        labelIncome.setText(String.valueOf(totalIncome));
-        labelExpense.setText(String.valueOf(totalExpense));
-    }
 
     @FXML
     void clickedLogout(ActionEvent event) {
@@ -1071,87 +1133,43 @@ public class UserDashboardController implements Initializable {
             btnDashboard.setStyle("-fx-background-color: #aab6fb;");
             btnExpense.setStyle("-fx-background-color: transparent;");
             btnIncome.setStyle("-fx-background-color: transparent;");
-            btnBudget.setStyle("-fx-background-color: transparent;");
             btnGoals.setStyle("-fx-background-color: transparent;");
-            btnReport.setStyle("-fx-background-color: transparent;");
 
         } else if (event.getSource() == btnExpense) {
             dashboardPane.setVisible(false);
             expensePane.setVisible(true);
             incomePane.setVisible(false);
-//            budgetPane.setVisible(false);
             goalPane.setVisible(false);
-//            ReportPane.setVisible(false);
 
             btnDashboard.setStyle("-fx-background-color: transparent");
             btnExpense.setStyle("-fx-background-color:  #aab6fb;");
             btnIncome.setStyle("-fx-background-color: transparent;");
-            btnBudget.setStyle("-fx-background-color: transparent;");
             btnGoals.setStyle("-fx-background-color: transparent;");
-            btnReport.setStyle("-fx-background-color: transparent;");
 
             expenseShowListData();
         } else if (event.getSource() == btnIncome) {
             dashboardPane.setVisible(false);
             expensePane.setVisible(false);
             incomePane.setVisible(true);
-//            budgetPane.setVisible(false);
             goalPane.setVisible(false);
-//            ReportPane.setVisible(false);
 
             btnDashboard.setStyle("-fx-background-color: transparent;");
             btnExpense.setStyle("-fx-background-color: transparent;");
             btnIncome.setStyle("-fx-background-color: #aab6fb;");
-            btnBudget.setStyle("-fx-background-color: transparent;");
             btnGoals.setStyle("-fx-background-color: transparent;");
-            btnReport.setStyle("-fx-background-color: transparent;");
 
             incomeShowListData();
-        } else if (event.getSource() == btnBudget) {
-            dashboardPane.setVisible(false);
-            expensePane.setVisible(false);
-            incomePane.setVisible(false);
-//            budgetPane.setVisible(true);
-            goalPane.setVisible(false);
-//            ReportPane.setVisible(false);
-
-            btnDashboard.setStyle("-fx-background-color: transparent;");
-            btnExpense.setStyle("-fx-background-color: transparent;");
-            btnIncome.setStyle("-fx-background-color: transparent;");
-            btnBudget.setStyle("-fx-background-color: #aab6fb;");
-            btnGoals.setStyle("-fx-background-color: transparent;");
-            btnReport.setStyle("-fx-background-color: transparent;");
-
         } else if (event.getSource() == btnGoals) {
             dashboardPane.setVisible(false);
             expensePane.setVisible(false);
             incomePane.setVisible(false);
-//            budgetPane.setVisible(false);
             goalPane.setVisible(true);
-//            ReportPane.setVisible(false);
 
             btnDashboard.setStyle("-fx-background-color:  transparent;");
             btnExpense.setStyle("-fx-background-color: transparent;");
             btnIncome.setStyle("-fx-background-color: transparent;");
-            btnBudget.setStyle("-fx-background-color: transparent;");
             btnGoals.setStyle("-fx-background-color: #aab6fb;");
-            btnReport.setStyle("-fx-background-color: transparent;");
             goalShowListData();
-        } else if (event.getSource() == btnReport) {
-            dashboardPane.setVisible(false);
-            expensePane.setVisible(false);
-            incomePane.setVisible(false);
-//            budgetPane.setVisible(false);
-            goalPane.setVisible(false);
-//            ReportPane.setVisible(true);
-
-            btnDashboard.setStyle("-fx-background-color:  transparent;");
-            btnExpense.setStyle("-fx-background-color: transparent;");
-            btnIncome.setStyle("-fx-background-color: transparent;");
-            btnBudget.setStyle("-fx-background-color: transparent;");
-            btnGoals.setStyle("-fx-background-color: transparent;");
-            btnReport.setStyle("-fx-background-color: #aab6fb;");
-
         }
     }
 
@@ -1160,11 +1178,46 @@ public class UserDashboardController implements Initializable {
         LocalDate startDate = dpDashboardStartDate.getValue();
         LocalDate endDate = dpDashboardEndDate.getValue();
 
-        populateIncomeDataFromDatabase(startDate, endDate);
-        populateExpenseDataFromDatabase(startDate, endDate);
+        if (startDate == null || endDate == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Please enter both start date and end date.");
+            alert.showAndWait();
+            return;
+        }else {
+            long totalIncome = calculateTotalIncomeFromDatabase(startDate, endDate);
+            long totalExpense = calculateTotalExpenseFromDatabase(startDate, endDate);
 
-        populateExpenseCategoryPieChart(startDate, endDate);
-        populateIncomeCategoryPieChart(startDate, endDate);
+            labelIncome.setText(String.valueOf(totalIncome));
+            labelExpense.setText(String.valueOf(totalExpense));
+
+            populateIncomeDataFromDatabase(startDate, endDate);
+            populateExpenseDataFromDatabase(startDate, endDate);
+
+            populateExpenseCategoryPieChart(startDate, endDate);
+            populateIncomeCategoryPieChart(startDate, endDate);
+
+        }
+    }
+    @FXML
+    void showThisYear(ActionEvent event) {
+        dpDashboardStartDate.setValue(null);
+        dpDashboardEndDate.setValue(null);
+        LocalDate defaultStartDate = LocalDate.now().withDayOfYear(1);
+
+        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate,  LocalDate.now());
+        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate,  LocalDate.now());
+
+        labelIncome.setText(String.valueOf(totalIncome));
+        labelExpense.setText(String.valueOf(totalExpense));
+
+        populateIncomeDataFromDatabase(defaultStartDate, LocalDate.now());
+        populateExpenseDataFromDatabase(defaultStartDate, LocalDate.now());
+
+        populateExpenseCategoryPieChart(defaultStartDate, LocalDate.now());
+        populateIncomeCategoryPieChart(defaultStartDate, LocalDate.now());
+
     }
 
     private void populateIncomeDataFromDatabase(LocalDate startDate, LocalDate endDate) {
@@ -1282,6 +1335,11 @@ public class UserDashboardController implements Initializable {
         dpDashboardStartDate.setValue(defaultStartDate);
         dpDashboardEndDate.setValue(LocalDate.now());
 
+        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate,  LocalDate.now());
+        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate,  LocalDate.now());
+
+        labelIncome.setText(String.valueOf(totalIncome));
+        labelExpense.setText(String.valueOf(totalExpense));
 
         populateIncomeDataFromDatabase(defaultStartDate, LocalDate.now());
         populateExpenseDataFromDatabase(defaultStartDate, LocalDate.now());
@@ -1289,6 +1347,6 @@ public class UserDashboardController implements Initializable {
         populateExpenseCategoryPieChart(defaultStartDate, LocalDate.now());
         populateIncomeCategoryPieChart(defaultStartDate, LocalDate.now());
 
-        updateTotalIncomeExpenseLabel();
+        labelUsername.setText(UserContext.getUsername().toUpperCase());
     }
 }

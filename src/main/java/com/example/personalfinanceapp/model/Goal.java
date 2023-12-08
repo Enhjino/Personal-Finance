@@ -7,13 +7,16 @@ public class Goal {
     private String month;
     private int expected;
     private int actual;
+    private boolean done;
     private Button edit;
 
-    public Goal(String id, String month, int expected, int actual) {
+
+    public Goal(String id, String month, int expected, int actual, boolean done) {
         Id = id;
         this.month = month;
         this.expected = expected;
         this.actual = actual;
+        this.done = done;
     }
 
     public String getId() {
@@ -54,5 +57,12 @@ public class Goal {
 
     public void setEdit(Button edit) {
         this.edit = edit;
+    }
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }
