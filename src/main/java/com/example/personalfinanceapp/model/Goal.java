@@ -9,6 +9,19 @@ public class Goal {
     private final int actual;
     private final boolean done;
     private Button edit;
+    public boolean isDone() {
+        return done;
+    }
+
+    public Button getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Button edit) {
+        this.edit = edit;
+    }
+
+
 
 
     public Goal(String id, String month, int expected, int actual, boolean done) {

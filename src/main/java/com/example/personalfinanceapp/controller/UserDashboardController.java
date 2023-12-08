@@ -5,6 +5,7 @@ import com.example.personalfinanceapp.model.Expense;
 import com.example.personalfinanceapp.model.Goal;
 import com.example.personalfinanceapp.model.Income;
 import com.example.personalfinanceapp.model.UserContext;
+import com.example.personalfinanceapp.util.AlertUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,13 +24,17 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.sql.Date;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class UserDashboardController implements Initializable {
 
+    private static final Logger LOGGER = Logger.getLogger(UserDashboardController.class.getName());
     @FXML
     private BarChart<String, Number> barChartIncome;
 
@@ -220,7 +225,7 @@ public class UserDashboardController implements Initializable {
             while (result.next()) {
                 incomeData = new Income(result.getString("id"), result.getString("title"),
                         result.getString("category"), result.getString("description"),
-                        result.getInt("amount"),  result.getDate("date"));
+                        result.getInt("amount"), result.getDate("date"));
                 incomeList.add(incomeData);
             }
         } catch (Exception e) {
@@ -230,6 +235,7 @@ public class UserDashboardController implements Initializable {
     }
 
     public void incomeShowListData() {
+        LOGGER.info("Entering incomeShowListData method.");
         ObservableList<Income> incomeList = incomeListData();
         colIncomeTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colIncomeCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -323,6 +329,7 @@ public class UserDashboardController implements Initializable {
         colIncomeDelete.setCellFactory(deleteCellFactory);
 
         treevwIncome.setItems(incomeList);
+        LOGGER.info("Exiting incomeShowListData method.");
     }
 
     public ObservableList<Expense> expenseListData() {
@@ -340,7 +347,7 @@ public class UserDashboardController implements Initializable {
             while (result.next()) {
                 expenseData = new Expense(result.getString("id"), result.getString("title"),
                         result.getString("category"), result.getString("description"),
-                        result.getInt("amount"),  result.getDate("date"));
+                        result.getInt("amount"), result.getDate("date"));
                 expenseList.add(expenseData);
             }
         } catch (Exception e) {
@@ -460,7 +467,7 @@ public class UserDashboardController implements Initializable {
             while (result.next()) {
 
                 goalData = new Goal(result.getString("Id"), result.getString("month"),
-                        result.getInt("expected"), result.getInt("actual"),result.getBoolean("done"));
+                        result.getInt("expected"), result.getInt("actual"), result.getBoolean("done"));
                 goalList.add(goalData);
             }
         } catch (Exception e) {
@@ -481,6 +488,7 @@ public class UserDashboardController implements Initializable {
     }
 
     public void goalShowListData() {
+        LOGGER.info("Entering goalShowListData method.");
         ObservableList<Goal> goalList = goalListData();
         colGoalMonth.setCellValueFactory(new PropertyValueFactory<>("month"));
         colGoalExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
@@ -536,12 +544,10 @@ public class UserDashboardController implements Initializable {
                             btn.setOnAction(event -> {
                                 Goal goalData = getTableView().getItems().get(getIndex());
 
-
                                 selectedGoalId = goalData.getId();
 
                                 tfGoalMonth.setText(String.valueOf(goalData.getMonth()));
                                 tfGoalExpected.setText(String.valueOf(goalData.getExpected()));
-
                                 if (!tfGoalMonth.getText().equals("")) {
                                     tfGoalExpected.setEditable(true);
 
@@ -558,8 +564,8 @@ public class UserDashboardController implements Initializable {
         colGoalEdit.setCellFactory(editCellFactory);
 
         treevwGoal.setItems(goalList);
+        LOGGER.info("Exiting goalShowListData method.");
     }
-
 
 
     @FXML
@@ -567,14 +573,10 @@ public class UserDashboardController implements Initializable {
         String query = "INSERT INTO expense (title, category, description, amount, date) " + "VALUES (?,?,?,?,?)";
         connect = DatabaseConnection.getConnection();
         try {
-            Alert alert;
             if (tfExpenseTitle.getText().isEmpty() || tfExpenseCategory.getText().isEmpty() || taExpenseDescription.getText().isEmpty() ||
                     tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing fields.");
-                alert.showAndWait();
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
+
             } else {
                 LocalDate expenseDate = dpExpenseDate.getValue();
                 java.sql.Date sqlDate = java.sql.Date.valueOf(expenseDate);
@@ -588,12 +590,7 @@ public class UserDashboardController implements Initializable {
 
                 prepare.executeUpdate();
 
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Expense successfully added.");
-                alert.showAndWait();
-
+                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Expense successfully added.");
                 expenseShowListData();
                 clearExpense();
 
@@ -608,14 +605,9 @@ public class UserDashboardController implements Initializable {
         String query = "INSERT INTO income (title, category, description, amount, date) " + "VALUES (?,?,?,?,?)";
         connect = DatabaseConnection.getConnection();
         try {
-            Alert alert;
             if (tfIncomeTitle.getText().isEmpty() || tfIncomeCategory.getText().isEmpty() || taIncomeDescription.getText().isEmpty() ||
                     tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing fields.");
-                alert.showAndWait();
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
             } else {
                 LocalDate incomeDate = dpIncomeDate.getValue();
                 java.sql.Date sqlDate = java.sql.Date.valueOf(incomeDate);
@@ -629,11 +621,7 @@ public class UserDashboardController implements Initializable {
 
                 prepare.executeUpdate();
 
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Income successfully added.");
-                alert.showAndWait();
+                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Income successfully added.");
 
                 incomeShowListData();
                 clearIncome();
@@ -649,13 +637,8 @@ public class UserDashboardController implements Initializable {
         String query = "INSERT INTO goal (month, expected, actual,done) " + "VALUES (?,?,?,?)";
         connect = DatabaseConnection.getConnection();
         try {
-            Alert alert;
             if (tfGoalMonth.getText().isEmpty() || tfGoalExpected.getText().isEmpty()) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing fields.");
-                alert.showAndWait();
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
             } else {
                 int calculatedActual = calculateActualForGoal(tfGoalMonth.getText());
 
@@ -667,11 +650,8 @@ public class UserDashboardController implements Initializable {
 
                 prepare.executeUpdate();
 
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Goal successfully added.");
-                alert.showAndWait();
+
+                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Goal successfully added.");
 
                 goalShowListData();
                 clearGoal();
@@ -688,25 +668,17 @@ public class UserDashboardController implements Initializable {
         connect = DatabaseConnection.getConnection();
 
         try {
-            Alert alert;
-            if (expenseData != null){
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to delete expense : " + expenseData.getTitle() + " ?");
-                Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+            if (expenseData != null) {
+
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to delete expense : " + expenseData.getTitle() + " ?")) {
                     prepare = connect.prepareStatement(deleteExpense);
                     prepare.setString(1, expenseData.getId());
 
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Expense successfully deleted.");
-                    alert.showAndWait();
+
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Expense successfully deleted.");
 
                     expenseShowListData();
                     clearExpense();
@@ -723,25 +695,15 @@ public class UserDashboardController implements Initializable {
         connect = DatabaseConnection.getConnection();
 
         try {
-            Alert alert;
-            if (incomeData != null){
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to delete income : " + incomeData.getTitle() + " ?");
-                Optional<ButtonType> option = alert.showAndWait();
+            if (incomeData != null) {
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to delete income : " + incomeData.getTitle() + " ?")) {
                     prepare = connect.prepareStatement(deleteIncome);
                     prepare.setString(1, incomeData.getId());
 
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Income successfully deleted.");
-                    alert.showAndWait();
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Income successfully deleted.");
 
                     incomeShowListData();
                     clearExpense();
@@ -840,22 +802,12 @@ public class UserDashboardController implements Initializable {
         connect = DatabaseConnection.getConnection();
 
         try {
-            Alert alert;
             if (tfExpenseTitle.getText().isEmpty() || tfExpenseCategory.getText().isEmpty() || taExpenseDescription.getText().isEmpty() ||
-                    tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null ) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing fields.");
-                alert.showAndWait();
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to update this?");
-                Optional<ButtonType> option = alert.showAndWait();
+                    tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null) {
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
 
-                if (option.get().equals(ButtonType.OK)) {
+            } else {
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to update this?")) {
                     LocalDate expenseDate = dpExpenseDate.getValue();
                     java.sql.Date sqlDate = java.sql.Date.valueOf(expenseDate);
 
@@ -869,11 +821,7 @@ public class UserDashboardController implements Initializable {
 
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully updated.");
-                    alert.showAndWait();
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Successfully updated.");
 
                     expenseShowListData();
                     clearExpense();
@@ -891,22 +839,12 @@ public class UserDashboardController implements Initializable {
         connect = DatabaseConnection.getConnection();
 
         try {
-            Alert alert;
             if (tfIncomeTitle.getText().isEmpty() || tfIncomeCategory.getText().isEmpty() || taIncomeDescription.getText().isEmpty() ||
-                    tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null ) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing field(s).");
-                alert.showAndWait();
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to update this?");
-                Optional<ButtonType> option = alert.showAndWait();
+                    tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null) {
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
 
-                if (option.get().equals(ButtonType.OK)) {
+            } else {
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to update this?")) {
                     LocalDate incomeDate = dpIncomeDate.getValue();
                     java.sql.Date sqlDate = java.sql.Date.valueOf(incomeDate);
 
@@ -920,11 +858,8 @@ public class UserDashboardController implements Initializable {
 
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully updated.");
-                    alert.showAndWait();
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Successfully updated.");
+
 
                     incomeShowListData();
                     clearIncome();
@@ -934,6 +869,7 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
     private int calculateActualForGoal(String month) {
 
         Map<String, String> monthMap = new HashMap<>();
@@ -970,37 +906,23 @@ public class UserDashboardController implements Initializable {
         connect = DatabaseConnection.getConnection();
 
         try {
-            Alert alert;
             if (tfGoalMonth.getText().isEmpty() || tfGoalExpected.getText().isEmpty()) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Fill in the missing field(s).");
-                alert.showAndWait();
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to update this?");
-                Optional<ButtonType> option = alert.showAndWait();
+                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
 
-                if (option.get().equals(ButtonType.OK)) {
+            } else {
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to update this?")) {
                     int calculatedActual = calculateActualForGoal(tfGoalMonth.getText());
 
                     prepare = connect.prepareStatement(query);
                     prepare.setString(1, tfGoalMonth.getText());
                     prepare.setInt(2, Integer.parseInt(tfGoalExpected.getText()));
                     prepare.setInt(3, calculatedActual);
-                    prepare.setBoolean(4,(calculatedActual > Integer.parseInt(tfGoalExpected.getText())));
-                    prepare.setString(5,selectedGoalId);
+                    prepare.setBoolean(4, (calculatedActual > Integer.parseInt(tfGoalExpected.getText())));
+                    prepare.setString(5, selectedGoalId);
 
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully updated.");
-                    alert.showAndWait();
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Successfully updated.");
 
                     goalShowListData();
                     clearGoal();
@@ -1074,20 +996,10 @@ public class UserDashboardController implements Initializable {
     }
 
 
-
-
-
     @FXML
     void clickedLogout(ActionEvent event) {
         try {
-            Alert alert;
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to log out?");
-            Optional<ButtonType> option = alert.showAndWait();
-
-            if (option.get().equals(ButtonType.OK)) {
+            if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to log out?")) {
                 btnLogout.getScene().getWindow().hide();
                 Parent loginStageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/personalfinanceapp/login.fxml")));
                 Stage loginStage = new Stage();
@@ -1108,9 +1020,7 @@ public class UserDashboardController implements Initializable {
             dashboardPane.setVisible(true);
             expensePane.setVisible(false);
             incomePane.setVisible(false);
-//            budgetPane.setVisible(false);
             goalPane.setVisible(false);
-//            ReportPane.setVisible(false);
 
             btnDashboard.setStyle("-fx-background-color: #aab6fb;");
             btnExpense.setStyle("-fx-background-color: transparent;");
@@ -1161,11 +1071,8 @@ public class UserDashboardController implements Initializable {
         LocalDate endDate = dpDashboardEndDate.getValue();
 
         if (startDate == null || endDate == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter both start date and end date.");
-            alert.showAndWait();
+            AlertUtils.showAlert(Alert.AlertType.WARNING, "Warning", null, "Please enter both start date and end date.");
+
         } else {
             long totalIncome = calculateTotalIncomeFromDatabase(startDate, endDate);
             long totalExpense = calculateTotalExpenseFromDatabase(startDate, endDate);
@@ -1310,6 +1217,7 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnDashboard.setStyle("-fx-background-color: #aab6fb;");
