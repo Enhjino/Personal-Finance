@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserDashboardController implements Initializable {
@@ -232,7 +233,7 @@ public class UserDashboardController implements Initializable {
                 incomeList.add(incomeData);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
         return incomeList;
     }
@@ -354,7 +355,7 @@ public class UserDashboardController implements Initializable {
                 expenseList.add(expenseData);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
         return expenseList;
     }
@@ -476,7 +477,7 @@ public class UserDashboardController implements Initializable {
                 goalList.add(goalData);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         } finally {
             try {
                 if (result != null) {
@@ -612,7 +613,7 @@ public class UserDashboardController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
@@ -642,7 +643,7 @@ public class UserDashboardController implements Initializable {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
@@ -681,7 +682,7 @@ public class UserDashboardController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);;
         }
     }
 
@@ -810,7 +811,7 @@ public class UserDashboardController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
@@ -848,7 +849,7 @@ public class UserDashboardController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
@@ -911,7 +912,7 @@ public class UserDashboardController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
@@ -992,7 +993,7 @@ public class UserDashboardController implements Initializable {
                 loginStage.show();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while adding a record", e);
         }
     }
 
