@@ -4,7 +4,7 @@ import javafx.scene.control.Button;
 
 import java.util.Date;
 
-public class Income {
+public class Income implements RecordData {
     private String Id;
     private String title;
     private String category;

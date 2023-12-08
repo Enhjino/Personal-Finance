@@ -1,10 +1,7 @@
 package com.example.personalfinanceapp.controller;
 
 import com.example.personalfinanceapp.db.DatabaseConnection;
-import com.example.personalfinanceapp.model.Expense;
-import com.example.personalfinanceapp.model.Goal;
-import com.example.personalfinanceapp.model.Income;
-import com.example.personalfinanceapp.model.UserContext;
+import com.example.personalfinanceapp.model.*;
 import com.example.personalfinanceapp.util.AlertUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +32,11 @@ import java.util.logging.Logger;
 public class UserDashboardController implements Initializable {
 
     private static final Logger LOGGER = Logger.getLogger(UserDashboardController.class.getName());
+    private static final String INSERT_QUERY_FORMAT = "INSERT INTO %s (title, category, description, amount, date)" +
+            " VALUES (?,?,?,?,?)";
+    private static final String DELETE_QUERY_FORMAT = "DELETE FROM %s WHERE id = ?";
+    private static final String SELECT_QUERY_FORMAT = "SELECT * FROM %s";
+
     @FXML
     private BarChart<String, Number> barChartIncome;
 
@@ -210,8 +212,9 @@ public class UserDashboardController implements Initializable {
     private String selectedExpenseId;
     private String selectedGoalId;
 
+
     public ObservableList<Income> incomeListData() {
-        String query = "SELECT * FROM income";
+        String query = String.format(SELECT_QUERY_FORMAT,"income");
 
         ObservableList<Income> incomeList = FXCollections.observableArrayList();
 
@@ -333,7 +336,7 @@ public class UserDashboardController implements Initializable {
     }
 
     public ObservableList<Expense> expenseListData() {
-        String query = "SELECT * FROM expense";
+        String query = String.format(SELECT_QUERY_FORMAT,"expense");
 
         ObservableList<Expense> expenseList = FXCollections.observableArrayList();
 
@@ -357,6 +360,7 @@ public class UserDashboardController implements Initializable {
     }
 
     public void expenseShowListData() {
+        LOGGER.info("Entering expenseShowListData method.");
         ObservableList<Expense> expenseList = expenseListData();
         colExpenseTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colExpenseCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -450,10 +454,11 @@ public class UserDashboardController implements Initializable {
         colExpenseDelete.setCellFactory(deleteCellFactory);
 
         treevwExpense.setItems(expenseList);
+        LOGGER.info("Exiting incomeShowListData method.");
     }
 
     public ObservableList<Goal> goalListData() {
-        String query = "SELECT * FROM goal";
+        String query = String.format(SELECT_QUERY_FORMAT,"goal");
 
         ObservableList<Goal> goalList = FXCollections.observableArrayList();
 
@@ -566,66 +571,45 @@ public class UserDashboardController implements Initializable {
         treevwGoal.setItems(goalList);
         LOGGER.info("Exiting goalShowListData method.");
     }
-
-
     @FXML
-    void addExpense() {
-        String query = "INSERT INTO expense (title, category, description, amount, date) " + "VALUES (?,?,?,?,?)";
-        connect = DatabaseConnection.getConnection();
-        try {
-            if (tfExpenseTitle.getText().isEmpty() || tfExpenseCategory.getText().isEmpty() || taExpenseDescription.getText().isEmpty() ||
-                    tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null) {
-                AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
-
-            } else {
-                LocalDate expenseDate = dpExpenseDate.getValue();
-                java.sql.Date sqlDate = java.sql.Date.valueOf(expenseDate);
-
-                prepare = connect.prepareStatement(query);
-                prepare.setString(1, tfExpenseTitle.getText());
-                prepare.setString(2, tfExpenseCategory.getText());
-                prepare.setString(3, taExpenseDescription.getText());
-                prepare.setInt(4, Integer.parseInt(tfExpenseAmount.getText()));
-                prepare.setString(5, String.valueOf(sqlDate));
-
-                prepare.executeUpdate();
-
-                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Expense successfully added.");
-                expenseShowListData();
-                clearExpense();
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    void addExpense(ActionEvent event) {
+        addRecord("expense", tfExpenseTitle, tfExpenseCategory, taExpenseDescription, tfExpenseAmount, dpExpenseDate);
     }
 
     @FXML
-    void addIncome() {
-        String query = "INSERT INTO income (title, category, description, amount, date) " + "VALUES (?,?,?,?,?)";
+    void addIncome(ActionEvent event) {
+        addRecord("income", tfIncomeTitle, tfIncomeCategory, taIncomeDescription, tfIncomeAmount, dpIncomeDate);
+    }
+    private void addRecord(String tableName, TextField titleField, TextField categoryField,
+                           TextArea descriptionArea, TextField amountField, DatePicker datePicker) {
+        String query = String.format(INSERT_QUERY_FORMAT, tableName);
         connect = DatabaseConnection.getConnection();
         try {
-            if (tfIncomeTitle.getText().isEmpty() || tfIncomeCategory.getText().isEmpty() || taIncomeDescription.getText().isEmpty() ||
-                    tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null) {
+            if (titleField.getText().isEmpty() || categoryField.getText().isEmpty() ||
+                    descriptionArea.getText().isEmpty() || amountField.getText().isEmpty() || datePicker.getValue() == null) {
                 AlertUtils.showAlert(Alert.AlertType.ERROR, "Error", null, "Fill in the missing fields.");
             } else {
-                LocalDate incomeDate = dpIncomeDate.getValue();
-                java.sql.Date sqlDate = java.sql.Date.valueOf(incomeDate);
+                LocalDate recordDate = datePicker.getValue();
+                java.sql.Date sqlDate = java.sql.Date.valueOf(recordDate);
 
                 prepare = connect.prepareStatement(query);
-                prepare.setString(1, tfIncomeTitle.getText());
-                prepare.setString(2, tfIncomeCategory.getText());
-                prepare.setString(3, taIncomeDescription.getText());
-                prepare.setInt(4, Integer.parseInt(tfIncomeAmount.getText()));
+                prepare.setString(1, titleField.getText());
+                prepare.setString(2, categoryField.getText());
+                prepare.setString(3, descriptionArea.getText());
+                prepare.setInt(4, Integer.parseInt(amountField.getText()));
                 prepare.setString(5, String.valueOf(sqlDate));
 
                 prepare.executeUpdate();
 
-                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Income successfully added.");
+                AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, tableName + " successfully added.");
 
-                incomeShowListData();
-                clearIncome();
-
+                if (tableName.equals("expense")) {
+                    expenseShowListData();
+                    clearExpense();
+                } else if (tableName.equals("income")) {
+                    incomeShowListData();
+                    clearIncome();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -663,56 +647,44 @@ public class UserDashboardController implements Initializable {
     }
 
     public void deleteExpense(Expense expenseData) {
-        String deleteExpense = "DELETE FROM expense WHERE id = ?";
-
-        connect = DatabaseConnection.getConnection();
-
-        try {
-
-            if (expenseData != null) {
-
-                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to delete expense : " + expenseData.getTitle() + " ?")) {
-                    prepare = connect.prepareStatement(deleteExpense);
-                    prepare.setString(1, expenseData.getId());
-
-                    prepare.executeUpdate();
-
-
-                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Expense successfully deleted.");
-
-                    expenseShowListData();
-                    clearExpense();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        deleteRecord("expense", expenseData);
     }
 
     public void deleteIncome(Income incomeData) {
-        String deleteIncome = "DELETE FROM income WHERE id = ?";
+        deleteRecord("income", incomeData);
+    }
 
+    public <T extends RecordData> void deleteRecord(String tableName, T recordData) {
+        String query = String.format(DELETE_QUERY_FORMAT, tableName);
         connect = DatabaseConnection.getConnection();
 
         try {
-            if (incomeData != null) {
+            if (recordData != null) {
 
-                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to delete income : " + incomeData.getTitle() + " ?")) {
-                    prepare = connect.prepareStatement(deleteIncome);
-                    prepare.setString(1, incomeData.getId());
+                String recordType = (tableName.equals("expense")) ? "expense" : "income";
+
+                if (AlertUtils.showConfirmationAlert("Confirmation", null, "Are you sure you want to delete " + recordType + " : " + recordData.getTitle() + " ?")) {
+                    prepare = connect.prepareStatement(query);
+                    prepare.setString(1, recordData.getId());
 
                     prepare.executeUpdate();
 
-                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, "Income successfully deleted.");
+                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", null, recordType + " successfully deleted.");
 
-                    incomeShowListData();
-                    clearExpense();
+                    if (tableName.equals("expense")) {
+                        expenseShowListData();
+                        clearExpense();
+                    } else if (tableName.equals("income")) {
+                        incomeShowListData();
+                        clearExpense();
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void clearExpense() {
@@ -721,6 +693,11 @@ public class UserDashboardController implements Initializable {
         tfExpenseAmount.clear();
         taExpenseDescription.clear();
         dpExpenseDate.setValue(null);
+        tfExpenseCategory.setEditable(true);
+        taExpenseDescription.setEditable(true);
+        tfExpenseAmount.setEditable(true);
+        dpExpenseDate.setEditable(true);
+        dpExpenseDate.setDisable(false);
     }
 
     @FXML
@@ -730,6 +707,11 @@ public class UserDashboardController implements Initializable {
         tfIncomeAmount.clear();
         taIncomeDescription.clear();
         dpIncomeDate.setValue(null);
+        tfIncomeCategory.setEditable(true);
+        taIncomeDescription.setEditable(true);
+        tfIncomeAmount.setEditable(true);
+        dpIncomeDate.setEditable(true);
+        dpIncomeDate.setDisable(false);
     }
 
     @FXML
@@ -1027,6 +1009,7 @@ public class UserDashboardController implements Initializable {
             btnIncome.setStyle("-fx-background-color: transparent;");
             btnGoals.setStyle("-fx-background-color: transparent;");
 
+            showByThisYear(event);
         } else if (event.getSource() == btnExpense) {
             dashboardPane.setVisible(false);
             expensePane.setVisible(true);
