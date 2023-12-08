@@ -34,9 +34,9 @@ public class LoginController {
             validateLogin();
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Алдаа");
+            alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+            alert.setContentText("Fill in the missing fields.");
             alert.showAndWait();
         }
     }
@@ -61,9 +61,9 @@ public class LoginController {
                 if(queryResult.getInt(1) == 1) {
                     UserContext.setUsername(tfUsername.getText());
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай нэвтэрлээ.");
+                    alert.setContentText("Login successful.");
                     alert.showAndWait();
                     Stage stage = (Stage) exitButton.getScene().getWindow();
                     stage.close();
@@ -71,9 +71,9 @@ public class LoginController {
                     gotoUserStage();
                 } else {
                     alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Алдаа");
+                    alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Хэрэглэгчийн нэр/Нууц үг/Нэвтрэх эрх буруу байна.");
+                    alert.setContentText("Incorrect username or password.Please try again.");
                     alert.showAndWait();
                 }
             }

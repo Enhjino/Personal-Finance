@@ -571,9 +571,9 @@ public class UserDashboardController implements Initializable {
             if (tfExpenseTitle.getText().isEmpty() || tfExpenseCategory.getText().isEmpty() || taExpenseDescription.getText().isEmpty() ||
                     tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing fields.");
                 alert.showAndWait();
             } else {
                 LocalDate expenseDate = dpExpenseDate.getValue();
@@ -589,9 +589,9 @@ public class UserDashboardController implements Initializable {
                 prepare.executeUpdate();
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Success");
                 alert.setHeaderText(null);
-                alert.setContentText("Амжилттай нэмлээ.");
+                alert.setContentText("Expense successfully added.");
                 alert.showAndWait();
 
                 expenseShowListData();
@@ -612,9 +612,9 @@ public class UserDashboardController implements Initializable {
             if (tfIncomeTitle.getText().isEmpty() || tfIncomeCategory.getText().isEmpty() || taIncomeDescription.getText().isEmpty() ||
                     tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing fields.");
                 alert.showAndWait();
             } else {
                 LocalDate incomeDate = dpIncomeDate.getValue();
@@ -630,9 +630,9 @@ public class UserDashboardController implements Initializable {
                 prepare.executeUpdate();
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Success");
                 alert.setHeaderText(null);
-                alert.setContentText("Амжилттай нэмлээ.");
+                alert.setContentText("Income successfully added.");
                 alert.showAndWait();
 
                 incomeShowListData();
@@ -652,9 +652,9 @@ public class UserDashboardController implements Initializable {
             Alert alert;
             if (tfGoalMonth.getText().isEmpty() || tfGoalExpected.getText().isEmpty()) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing fields.");
                 alert.showAndWait();
             } else {
                 int calculatedActual = calculateActualForGoal(tfGoalMonth.getText());
@@ -668,9 +668,9 @@ public class UserDashboardController implements Initializable {
                 prepare.executeUpdate();
 
                 alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Success");
                 alert.setHeaderText(null);
-                alert.setContentText("Амжилттай нэмлээ.");
+                alert.setContentText("Goal successfully added.");
                 alert.showAndWait();
 
                 goalShowListData();
@@ -691,9 +691,9 @@ public class UserDashboardController implements Initializable {
             Alert alert;
             if (expenseData != null){
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Та Expense : " + expenseData.getTitle() + "-г устгахдаа итгэлтэй байна уу?");
+                alert.setContentText("Are you sure you want to delete expense : " + expenseData.getTitle() + " ?");
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
@@ -703,9 +703,9 @@ public class UserDashboardController implements Initializable {
                     prepare.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай устгагдлаа.");
+                    alert.setContentText("Expense successfully deleted.");
                     alert.showAndWait();
 
                     expenseShowListData();
@@ -726,9 +726,9 @@ public class UserDashboardController implements Initializable {
             Alert alert;
             if (incomeData != null){
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Та Income : " + incomeData.getTitle() + "-г устгахдаа итгэлтэй байна уу?");
+                alert.setContentText("Are you sure you want to delete income : " + incomeData.getTitle() + " ?");
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
@@ -738,9 +738,9 @@ public class UserDashboardController implements Initializable {
                     prepare.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай устгагдлаа.");
+                    alert.setContentText("Income successfully deleted.");
                     alert.showAndWait();
 
                     incomeShowListData();
@@ -844,15 +844,15 @@ public class UserDashboardController implements Initializable {
             if (tfExpenseTitle.getText().isEmpty() || tfExpenseCategory.getText().isEmpty() || taExpenseDescription.getText().isEmpty() ||
                     tfExpenseAmount.getText().isEmpty() || dpExpenseDate.getValue() == null ) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing fields.");
                 alert.showAndWait();
             } else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Та шинэчлэл хийхдээ итгэлтэй байна уу?");
+                alert.setContentText("Are you sure you want to update this?");
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
@@ -870,9 +870,9 @@ public class UserDashboardController implements Initializable {
                     prepare.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай шинэчлэгдлээ.");
+                    alert.setContentText("Successfully updated.");
                     alert.showAndWait();
 
                     expenseShowListData();
@@ -895,15 +895,15 @@ public class UserDashboardController implements Initializable {
             if (tfIncomeTitle.getText().isEmpty() || tfIncomeCategory.getText().isEmpty() || taIncomeDescription.getText().isEmpty() ||
                     tfIncomeAmount.getText().isEmpty() || dpIncomeDate.getValue() == null ) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing field(s).");
                 alert.showAndWait();
             } else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Та шинэчлэл хийхдээ итгэлтэй байна уу?");
+                alert.setContentText("Are you sure you want to update this?");
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
@@ -921,9 +921,9 @@ public class UserDashboardController implements Initializable {
                     prepare.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай шинэчлэгдлээ.");
+                    alert.setContentText("Successfully updated.");
                     alert.showAndWait();
 
                     incomeShowListData();
@@ -973,15 +973,15 @@ public class UserDashboardController implements Initializable {
             Alert alert;
             if (tfGoalMonth.getText().isEmpty() || tfGoalExpected.getText().isEmpty()) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Алдаа");
+                alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Дутуу талбаруудыг нөхнө үү.");
+                alert.setContentText("Fill in the missing field(s).");
                 alert.showAndWait();
             } else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мэдэгдэл");
+                alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Та шинэчлэл хийхдээ итгэлтэй байна уу?");
+                alert.setContentText("Are you sure you want to update this?");
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
@@ -997,9 +997,9 @@ public class UserDashboardController implements Initializable {
                     prepare.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Мэдэгдэл");
+                    alert.setTitle("Success");
                     alert.setHeaderText(null);
-                    alert.setContentText("Амжилттай шинэчлэгдлээ.");
+                    alert.setContentText("Successfully updated.");
                     alert.showAndWait();
 
                     goalShowListData();
@@ -1082,9 +1082,9 @@ public class UserDashboardController implements Initializable {
         try {
             Alert alert;
             alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Баталгаажуулах");
+            alert.setTitle("Confirmation");
             alert.setHeaderText(null);
-            alert.setContentText("Та программаас гарахад итгэлтэй байна уу?");
+            alert.setContentText("Are you sure you want to log out?");
             Optional<ButtonType> option = alert.showAndWait();
 
             if (option.get().equals(ButtonType.OK)) {
