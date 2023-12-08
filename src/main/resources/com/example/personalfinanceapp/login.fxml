@@ -52,11 +52,11 @@
                <Font name="System Bold" size="18.0" />
             </font>
          </Label>
-         <TextField fx:id="usernameTextfield" maxWidth="180.0" prefWidth="150.0" promptText="User Name" style="-fx-border-radius: 5; -fx-border-style: solid inside; -fx-border-color: #AC8CFC;" />
-         <PasswordField fx:id="passwordPasswordField" maxWidth="180.0" promptText="Password" style="-fx-border-color: #AC8CFC; -fx-border-style: solid inside; -fx-border-radius: 5;" />
+         <TextField fx:id="tfUsername" maxWidth="180.0" prefWidth="150.0" promptText="User Name" style="-fx-border-radius: 5; -fx-border-style: solid inside; -fx-border-color: #AC8CFC;" />
+         <PasswordField fx:id="pfPassword" maxWidth="180.0" promptText="Password" style="-fx-border-color: #AC8CFC; -fx-border-style: solid inside; -fx-border-radius: 5;" />
          <HBox alignment="CENTER" prefHeight="27.0" prefWidth="200.0" spacing="5.0">
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonOnAction" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Log in" textFill="WHITE" />
-            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Exit" textFill="WHITE" />
+            <Button mnemonicParsing="false" onAction="#login" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Log in" textFill="WHITE" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitProgram" prefHeight="25.0" prefWidth="80.0" style="-fx-background-color: #ac8cfc; -fx-background-radius: 5;" text="Exit" textFill="WHITE" />
          </HBox>
       </VBox>
    </right>

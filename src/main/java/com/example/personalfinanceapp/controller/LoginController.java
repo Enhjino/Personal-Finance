@@ -17,21 +17,20 @@ import java.util.Objects;
 
 public class LoginController {
 
-    public Button loginButton;
     @FXML
     private Button exitButton;
 
     @FXML
-    private PasswordField passwordPasswordField;
+    private PasswordField pfPassword;
 
     @FXML
-    private TextField usernameTextfield;
+    private TextField tfUsername;
     @FXML
     private Label labelUsername;
     @FXML
-    void loginButtonOnAction() {
+    void login() {
         Alert alert;
-        if (!usernameTextfield.getText().isBlank() && !passwordPasswordField.getText().isBlank()){
+        if (!tfUsername.getText().isBlank() && !pfPassword.getText().isBlank()){
             validateLogin();
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -43,14 +42,14 @@ public class LoginController {
     }
 
     @FXML
-    void exitButtonOnAction() {
+    void exitProgram() {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
     }
     public void validateLogin() {
         Connection connectDB = DatabaseConnection.getConnection();
 
-        String verifyLogin = "SELECT count(1) FROM login_info WHERE username = '"+usernameTextfield.getText()+"' AND password = '"+passwordPasswordField.getText()+"'";
+        String verifyLogin = "SELECT count(1) FROM login_info WHERE username = '"+tfUsername.getText()+"' AND password = '"+pfPassword.getText()+"'";
 
         Alert alert;
 
@@ -60,7 +59,7 @@ public class LoginController {
 
             while (queryResult.next()) {
                 if(queryResult.getInt(1) == 1) {
-                    UserContext.setUsername(usernameTextfield.getText());
+                    UserContext.setUsername(tfUsername.getText());
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Мэдэгдэл");
                     alert.setHeaderText(null);

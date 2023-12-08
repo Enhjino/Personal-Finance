@@ -5,11 +5,6 @@ import com.example.personalfinanceapp.model.Expense;
 import com.example.personalfinanceapp.model.Goal;
 import com.example.personalfinanceapp.model.Income;
 import com.example.personalfinanceapp.model.UserContext;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.sql.*;
 import java.sql.Date;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -145,10 +140,10 @@ public class UserDashboardController implements Initializable {
     private AnchorPane goalPane;
 
     @FXML
-    private Label labelExpense;
+    private Label lblExpense;
 
     @FXML
-    private Label labelIncome;
+    private Label lblIncome;
 
     @FXML
     private Label labelUsername;
@@ -197,15 +192,14 @@ public class UserDashboardController implements Initializable {
     private DatePicker dpIncomeDate;
 
     @FXML
-    private TableView<Expense> tvExpense;
+    private TableView<Expense> treevwExpense;
     @FXML
-    private TableView<Goal> tvGoal;
+    private TableView<Goal> treevwGoal;
 
     @FXML
-    private TableView<Income> tvIncome;
+    private TableView<Income> treevwIncome;
     private Connection connect;
     private PreparedStatement prepare;
-    private Statement statement;
     private ResultSet result;
     private String selectedIncomeId;
     private String selectedExpenseId;
@@ -234,10 +228,9 @@ public class UserDashboardController implements Initializable {
         }
         return incomeList;
     }
-    private ObservableList<Income> incomeList;
 
     public void incomeShowListData() {
-        incomeList = incomeListData();
+        ObservableList<Income> incomeList = incomeListData();
         colIncomeTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colIncomeCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colIncomeDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -247,10 +240,10 @@ public class UserDashboardController implements Initializable {
         colIncomeDelete.setCellValueFactory(new PropertyValueFactory<>("delete"));
 
         Callback<TableColumn<Income, Button>, TableCell<Income, Button>> editCellFactory
-                = new Callback<TableColumn<Income, Button>, TableCell<Income, Button>>() {
+                = new Callback<>() {
             @Override
             public TableCell<Income, Button> call(TableColumn<Income, Button> incomeDataStringTableColumn) {
-                final TableCell<Income, Button> cell = new TableCell<>() {
+                return new TableCell<>() {
                     final Button btn = new Button();
 
                     @Override
@@ -289,17 +282,16 @@ public class UserDashboardController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 
         colIncomeEdit.setCellFactory(editCellFactory);
 
         Callback<TableColumn<Income, Button>, TableCell<Income, Button>> deleteCellFactory
-                = new Callback<TableColumn<Income, Button>, TableCell<Income, Button>>() {
+                = new Callback<>() {
             @Override
             public TableCell<Income, Button> call(TableColumn<Income, Button> manageDataStringTableColumn) {
-                final TableCell<Income, Button> cell = new TableCell<>() {
+                return new TableCell<>() {
                     final Button btn = new Button();
 
                     @Override
@@ -325,13 +317,12 @@ public class UserDashboardController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 
         colIncomeDelete.setCellFactory(deleteCellFactory);
 
-        tvIncome.setItems(incomeList);
+        treevwIncome.setItems(incomeList);
     }
 
     public ObservableList<Expense> expenseListData() {
@@ -357,10 +348,9 @@ public class UserDashboardController implements Initializable {
         }
         return expenseList;
     }
-    private ObservableList<Expense> expenseList;
 
     public void expenseShowListData() {
-        expenseList = expenseListData();
+        ObservableList<Expense> expenseList = expenseListData();
         colExpenseTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colExpenseCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colExpenseDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -370,10 +360,10 @@ public class UserDashboardController implements Initializable {
         colExpenseDelete.setCellValueFactory(new PropertyValueFactory<>("delete"));
 
         Callback<TableColumn<Expense, Button>, TableCell<Expense, Button>> editCellFactory
-                = new Callback<TableColumn<Expense, Button>, TableCell<Expense, Button>>() {
+                = new Callback<>() {
             @Override
             public TableCell<Expense, Button> call(TableColumn<Expense, Button> expenseDataStringTableColumn) {
-                final TableCell<Expense, Button> cell = new TableCell<>() {
+                return new TableCell<>() {
                     final Button btn = new Button();
 
                     @Override
@@ -412,17 +402,16 @@ public class UserDashboardController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 
         colExpenseEdit.setCellFactory(editCellFactory);
 
         Callback<TableColumn<Expense, Button>, TableCell<Expense, Button>> deleteCellFactory
-                = new Callback<TableColumn<Expense, Button>, TableCell<Expense, Button>>() {
+                = new Callback<>() {
             @Override
             public TableCell<Expense, Button> call(TableColumn<Expense, Button> manageDataStringTableColumn) {
-                final TableCell<Expense, Button> cell = new TableCell<>() {
+                return new TableCell<>() {
                     final Button btn = new Button();
 
                     @Override
@@ -448,13 +437,12 @@ public class UserDashboardController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 
         colExpenseDelete.setCellFactory(deleteCellFactory);
 
-        tvExpense.setItems(expenseList);
+        treevwExpense.setItems(expenseList);
     }
 
     public ObservableList<Goal> goalListData() {
@@ -491,19 +479,14 @@ public class UserDashboardController implements Initializable {
         }
         return goalList;
     }
-    private ObservableList<Goal> goalList;
 
     public void goalShowListData() {
-        goalList = goalListData();
+        ObservableList<Goal> goalList = goalListData();
         colGoalMonth.setCellValueFactory(new PropertyValueFactory<>("month"));
         colGoalExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
         colGoalActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
         colGoalEdit.setCellValueFactory(new PropertyValueFactory<>("edit"));
-//        colGoalDone.setCellValueFactory(new PropertyValueFactory<>("done"));
-//        colGoalDone.setCellFactory(CheckBoxTableCell.forTableColumn(colGoalDone));
-//        colGoalDone.setEditable(false);
-//
-        colGoalDone.setCellFactory(column -> new TableCell<Goal, Boolean>() {
+        colGoalDone.setCellFactory(column -> new TableCell<>() {
             private final CheckBox checkBox = new CheckBox();
 
             {
@@ -531,10 +514,10 @@ public class UserDashboardController implements Initializable {
         });
 
         Callback<TableColumn<Goal, Button>, TableCell<Goal, Button>> editCellFactory
-                = new Callback<TableColumn<Goal, Button>, TableCell<Goal, Button>>() {
+                = new Callback<>() {
             @Override
             public TableCell<Goal, Button> call(TableColumn<Goal, Button> goalDaStringTableColumn) {
-                final TableCell<Goal, Button> cell = new TableCell<>() {
+                return new TableCell<>() {
                     final Button btn = new Button();
 
                     @Override
@@ -569,13 +552,12 @@ public class UserDashboardController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 
         colGoalEdit.setCellFactory(editCellFactory);
 
-        tvGoal.setItems(goalList);
+        treevwGoal.setItems(goalList);
     }
 
 
@@ -796,8 +778,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void selectExpense() {
-        Expense expenseData = tvExpense.getSelectionModel().getSelectedItem();
-        int num = tvExpense.getSelectionModel().getSelectedIndex();
+        Expense expenseData = treevwExpense.getSelectionModel().getSelectedItem();
+        int num = treevwExpense.getSelectionModel().getSelectedIndex();
 
         if (num < 0)
             return;
@@ -817,8 +799,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void selectIncome() {
-        Income incomeData = tvIncome.getSelectionModel().getSelectedItem();
-        int num = tvIncome.getSelectionModel().getSelectedIndex();
+        Income incomeData = treevwIncome.getSelectionModel().getSelectedItem();
+        int num = treevwIncome.getSelectionModel().getSelectedIndex();
 
         if (num < 0)
             return;
@@ -838,8 +820,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void selectGoal() {
-        Goal goalData = tvGoal.getSelectionModel().getSelectedItem();
-        int num = tvGoal.getSelectionModel().getSelectedIndex();
+        Goal goalData = treevwGoal.getSelectionModel().getSelectedItem();
+        int num = treevwGoal.getSelectionModel().getSelectedIndex();
 
         if (num < 0)
             return;
@@ -1107,7 +1089,7 @@ public class UserDashboardController implements Initializable {
 
             if (option.get().equals(ButtonType.OK)) {
                 btnLogout.getScene().getWindow().hide();
-                Parent loginStageParent = FXMLLoader.load(getClass().getResource("/com/example/personalfinanceapp/login.fxml"));
+                Parent loginStageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/personalfinanceapp/login.fxml")));
                 Stage loginStage = new Stage();
                 Scene loginStageScene = new Scene(loginStageParent);
                 loginStage.setScene(loginStageScene);
@@ -1174,7 +1156,7 @@ public class UserDashboardController implements Initializable {
     }
 
     @FXML
-    private void showFiltered() {
+    private void showByFilteredDate() {
         LocalDate startDate = dpDashboardStartDate.getValue();
         LocalDate endDate = dpDashboardEndDate.getValue();
 
@@ -1184,13 +1166,12 @@ public class UserDashboardController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Please enter both start date and end date.");
             alert.showAndWait();
-            return;
-        }else {
+        } else {
             long totalIncome = calculateTotalIncomeFromDatabase(startDate, endDate);
             long totalExpense = calculateTotalExpenseFromDatabase(startDate, endDate);
 
-            labelIncome.setText(String.valueOf(totalIncome));
-            labelExpense.setText(String.valueOf(totalExpense));
+            lblIncome.setText(String.valueOf(totalIncome));
+            lblExpense.setText(String.valueOf(totalExpense));
 
             populateIncomeDataFromDatabase(startDate, endDate);
             populateExpenseDataFromDatabase(startDate, endDate);
@@ -1200,17 +1181,18 @@ public class UserDashboardController implements Initializable {
 
         }
     }
+
     @FXML
-    void showThisYear(ActionEvent event) {
+    void showByThisYear(ActionEvent event) {
         dpDashboardStartDate.setValue(null);
         dpDashboardEndDate.setValue(null);
         LocalDate defaultStartDate = LocalDate.now().withDayOfYear(1);
 
-        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate,  LocalDate.now());
-        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate,  LocalDate.now());
+        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate, LocalDate.now());
+        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate, LocalDate.now());
 
-        labelIncome.setText(String.valueOf(totalIncome));
-        labelExpense.setText(String.valueOf(totalExpense));
+        lblIncome.setText(String.valueOf(totalIncome));
+        lblExpense.setText(String.valueOf(totalExpense));
 
         populateIncomeDataFromDatabase(defaultStartDate, LocalDate.now());
         populateExpenseDataFromDatabase(defaultStartDate, LocalDate.now());
@@ -1335,11 +1317,11 @@ public class UserDashboardController implements Initializable {
         dpDashboardStartDate.setValue(defaultStartDate);
         dpDashboardEndDate.setValue(LocalDate.now());
 
-        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate,  LocalDate.now());
-        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate,  LocalDate.now());
+        long totalIncome = calculateTotalIncomeFromDatabase(defaultStartDate, LocalDate.now());
+        long totalExpense = calculateTotalExpenseFromDatabase(defaultStartDate, LocalDate.now());
 
-        labelIncome.setText(String.valueOf(totalIncome));
-        labelExpense.setText(String.valueOf(totalExpense));
+        lblIncome.setText(String.valueOf(totalIncome));
+        lblExpense.setText(String.valueOf(totalExpense));
 
         populateIncomeDataFromDatabase(defaultStartDate, LocalDate.now());
         populateExpenseDataFromDatabase(defaultStartDate, LocalDate.now());
